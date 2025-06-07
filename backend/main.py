@@ -41,11 +41,12 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60  # 30 minutes
 REFRESH_TOKEN_EXPIRE_DAYS = 30  # 30 days
 
+
 app = FastAPI()
 
 origins = [
     "http://localhost:3000",
-    "https://hackstadk.netlify.app:8000"
+    "https://hackstadk.netlify.app"
 ]
 
 ##############
