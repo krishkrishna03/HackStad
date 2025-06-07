@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { BASE_URL } from './config';  // adjust path as needed
-
-// then use
-await axios.post(`${BASE_URL}/userlogin`, { email });
-
 import toast from 'react-hot-toast';
 import { useNavigate,useLocation } from 'react-router-dom';
 import axios from 'axios';
 function LoginForm() {
   const navigate = useNavigate();
   const [step, setStep] = useState('email');
-  const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const location = useLocation();
+  const [email, setEmail] = useState('');
+
+// then inside your handler
+
 
   const getBaseURL = () => {
     const ip = window.location.hostname; // Automatically gets the frontend's IP
