@@ -47,7 +47,7 @@ origins = [
     "http://localhost:3000",
     "https://hack-stad-57r8oa68l-krishkrishna03s-projects.vercel.app/",
     "https://hackstad-1-2s3q.onrender.com",
-    "https://hackstadk.netlify.app/"
+    "http://hackstadk.netlify.app:8000/"
 ]
 ##############
 #aws id code
