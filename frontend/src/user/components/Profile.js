@@ -290,7 +290,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Upload, Trash2 } from 'lucide-react';
-
+const BASE_URL = 'https://hackstad-0nqg.onrender.com';
 // Image Upload Section
 const ProfileImage = ({ profileImage, isEditing, onImageChange, onImageDelete }) => {
   const fileInputRef = useRef(null);
