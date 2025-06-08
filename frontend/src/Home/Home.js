@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Loading from "./Home/Loading";
-import Home from "./Home/Main";
+import Home from "./Home/Home";
 import SignupSelection from './Home/SignupSelection';
 import CollegeRegister from './College/Collegeregister';
 import CollegeDashboard from './College/CollegeDashboard';
