@@ -33,7 +33,7 @@ const RegistrationForm = () => {
 
   const getBaseURL = () => {
     const ip = window.location.hostname;
-    return `http://${ip === 'localhost' ? 'localhost' : ip}:8000`;
+    return `http://${ip === 'localhost' ? 'localhost' : ip}`;
   };
 
   const handleInputChange = (e) => {
