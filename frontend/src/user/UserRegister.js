@@ -32,8 +32,10 @@ const RegistrationForm = () => {
   };
 
   const getBaseURL = () => {
-    const ip = window.location.hostname;
-    return `http://${ip === 'localhost' ? 'localhost' : ip}`;
+    if (process.env.REACT_APP_API_URL) {
+      return process.env.REACT_APP_API_URL;
+    }
+    return 'https://hackstad-0nqg.onrender.com';
   };
 
   const handleInputChange = (e) => {
