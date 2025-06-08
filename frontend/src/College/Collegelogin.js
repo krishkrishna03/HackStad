@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-
+const BASE_URL = 'https://hackstad-0nqg.onrender.com';
 function SignIn() {
   const navigate = useNavigate();
   const [step, setStep] = useState('email');
