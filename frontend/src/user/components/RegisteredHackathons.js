@@ -16,7 +16,7 @@ const RegisteredHackathons = () => {
         }
 
         // Fetch registered hackathons from the backend
-        const response = await axios.get("http://127.0.0.1:8000/registered_hackathon", {
+        const response = await axios.get("https://hackstad-0nqg.onrender.com/registered_hackathon", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -25,7 +25,7 @@ const RegisteredHackathons = () => {
         // Fetch hackathon details based on titles from the response
         const hackathonData = await Promise.all(
           response.data.map(async (hackathon) => {
-            const res = await axios.get(`http://127.0.0.1:8000/hackathon_details?id=${encodeURIComponent(hackathon.hackathon_id)}`);
+            const res = await axios.get(`https://hackstad-0nqg.onrender.com/hackathon_details?id=${encodeURIComponent(hackathon.hackathon_id)}`);
             return { ...res.data, registrationDate: hackathon.registration_date , registration_id:hackathon.registration_id ,hackathon_id:hackathon.hackathon_id};
             
           })
