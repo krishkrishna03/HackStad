@@ -16,7 +16,8 @@ const UpcomingHackathons = () => {
         }
 
         const response = await axios.get(
-          "${BASE_URL}/upcoming_hackathons",
+          `${getBaseURL()}/upcoming_hackathons`,
+
           {
             headers: {
               Authorization: `Bearer ${token}`,
