@@ -118,12 +118,7 @@ async def get_hackathons_for_faculty(mentor_id: str):
         }
         for hackathon in hackathons
     ]
-if __name__ == "__main__":
-    import uvicorn
 
-    port = int(os.getenv("PORT", 8000))
-    # Bind to 0.0.0.0 for Render or any containerized hosting
-    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)  #
 ###########################################################################################################################
 
 
