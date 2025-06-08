@@ -46,7 +46,6 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000",
-    "https://hackstadk.netlify.app"
 ]
 
 ##############
@@ -58,7 +57,7 @@ import boto3
 #################################################################
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://hackstadk.netlify.app"],  # Frontend URL here
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -122,7 +121,12 @@ async def get_hackathons_for_faculty(mentor_id: str):
         }
         for hackathon in hackathons
     ]
+if __name__ == "__main__":
+    import uvicorn
 
+    port = int(os.getenv("PORT", 8000))
+    # Bind to 0.0.0.0 for Render or any containerized hosting
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)  #
 ###########################################################################################################################
 
 
