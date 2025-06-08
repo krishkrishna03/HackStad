@@ -427,8 +427,8 @@ async def static_image(input_key: str):
 # sender_password = "cnkp iyfy wuht ihtk"
 
 def send_otp_email(email: str, otp: int):
-    sender_email = os.getenv("MAIN_EMAIL")
-    sender_password = os.getenv("MAIN_EMAIL_PASSWORD")
+    sender_email = "hackathons.hackstad@gmail.com"
+    sender_password = "huxn oxkg swmz oqis"
 
     if not sender_email or not sender_password:
         raise HTTPException(status_code=500, detail="Email credentials are not set. Please configure MAIN_EMAIL and MAIN_EMAIL_PASSWORD.")
