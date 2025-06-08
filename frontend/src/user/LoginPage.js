@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
-import { BASE_URL } from './config';  // adjust path as needed
 import toast from 'react-hot-toast';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+
 function LoginForm() {
   const navigate = useNavigate();
-  const [step, setStep] = useState('email');
-  const [otp, setOtp] = useState('');
   const location = useLocation();
+
+  const [step, setStep] = useState('email');
   const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('');
 
-// then inside your handler
-
-
+  // Use environment variable or fallback to your deployed backend URL (HTTPS)
   const getBaseURL = () => {
-    const ip = window.location.hostname; // Automatically gets the frontend's IP
-    return `http://${ip}:8000`;
+    if (process.env.REACT_APP_API_URL) {
+      return process.env.REACT_APP_API_URL;
+    }
+    return 'https://hackstad-0nqg.onrender.com';
   };
 
   const handleEmailSubmit = async (e) => {
@@ -35,30 +36,24 @@ function LoginForm() {
   const redirectUrl = redirectUrlFromState || storedRedirectUrl || '/user-dashboard';
 
   const handleOtpSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const response = await axios.post(`${getBaseURL()}/verify-user`, { otp: parseInt(otp) });
-    const accessToken = response.data.access_token;
-    const refreshToken = response.data.refresh_token; // Assume the backend returns a refresh token
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${getBaseURL()}/verify-user`, { otp: parseInt(otp) });
+      const accessToken = response.data.access_token;
+      const refreshToken = response.data.refresh_token;
 
-    console.log('Access Token:', accessToken);
-    console.log('Refresh Token:', refreshToken);
+      // Store tokens
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('refresh_token', refreshToken);
 
-    // Store both tokens in localStorage
-    localStorage.setItem('token', accessToken);
-    localStorage.setItem('refresh_token', refreshToken);
-
-    toast.success('Login successful!');
-    // Clear the stored redirect URL so it doesn't interfere later
-    localStorage.removeItem('redirectUrl');
-    navigate(redirectUrl, { replace: true }); // Redirect to user dashboard
-    
-  } catch (error) {
-    console.error('Error verifying OTP:', error);
-    toast.error('Invalid OTP. Please try again.');
-  }
-};
-
+      toast.success('Login successful!');
+      localStorage.removeItem('redirectUrl');
+      navigate(redirectUrl, { replace: true });
+    } catch (error) {
+      console.error('Error verifying OTP:', error);
+      toast.error('Invalid OTP. Please try again.');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 flex items-center justify-center p-4">
