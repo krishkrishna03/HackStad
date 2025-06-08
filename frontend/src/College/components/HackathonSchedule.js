@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
+const getBaseURL = () => process.env.REACT_APP_API_URL || 'https://hackstad-0nqg.onrender.com';
 const UpcomingHackathons = () => {
   const [hackathons, setHackathons] = useState([]);
   const [loading, setLoading] = useState(true);
