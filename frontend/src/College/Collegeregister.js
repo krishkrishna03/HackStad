@@ -30,9 +30,11 @@ function SignupForm() {
   const prevStep = () => setStep((prev) => prev - 1);
 
   // Dynamically fetch the API base URL
-  const getBaseURL = () => {
-    const ip = window.location.hostname;
-    return `http://${ip === 'localhost' ? 'localhost' : ip}:8000`;
+   const getBaseURL = () => {
+    if (process.env.REACT_APP_API_URL) {
+      return process.env.REACT_APP_API_URL;
+    }
+    return 'https://hackstad-0nqg.onrender.com';
   };
 
   // Handle form submission
