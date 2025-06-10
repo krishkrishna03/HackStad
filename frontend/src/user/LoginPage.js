@@ -3,7 +3,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Mail, Shield, ArrowLeft, User } from 'lucide-react';
 import axios from 'axios';
-import Navbar from './navbar';
+import Navbar from './Navbar';
 
 function StudentLoginForm() {
   const navigate = useNavigate();
