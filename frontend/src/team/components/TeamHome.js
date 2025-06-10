@@ -10,8 +10,10 @@ export default function TeamHome() {
   const [teamDetails, setTeamDetails] = React.useState([]); // State variable to store team members data
   const token = localStorage.getItem('token'); // Get token from local storage
   const getBaseURL = () => {
-    const ip = window.location.hostname;
-    return `http://${ip}:8000`;
+    if (process.env.REACT_APP_API_URL) {
+      return process.env.REACT_APP_API_URL;
+    }
+    return 'https://hackstad-0nqg.onrender.com';
   };
   const [errorMessage, setErrorMessage] = React.useState(null); // State variable to store error message
 
