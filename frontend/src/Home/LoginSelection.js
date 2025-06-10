@@ -1,69 +1,67 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from './navbar';
 import { FaUserGraduate, FaChalkboardTeacher, FaUserTie, FaUniversity } from 'react-icons/fa';
+import LoginCard from './LoginCard';
+import Navbar from './navbar';
 
-function SignInPage() {
+export default function SignInPage() {
   const navigate = useNavigate();
 
   return (
     <>
-    <Navbar />
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 text-white p-6">
-      <div className="flex space-x-6">
-        <h2 className="sr-only">Sign In</h2> {/* Hidden heading for accessibility */}
+      <Navbar />
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 text-white">
+        <div className="container mx-auto px-4 py-16">
+          <div className="text-center mb-16">
+            <h1 className="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-violet-200 to-white">
+              Sign In to HackStad
+            </h1>
+            <p className="text-violet-200 text-lg">
+              Choose your role to access your personalized dashboard
+            </p>
+          </div>
 
-        {/* Student Login Box */}
-        <div
-          className="flex flex-col items-center justify-center w-48 h-56 bg-gray-800 rounded-lg p-4 hover:bg-purple-700 transition duration-200 cursor-pointer"
-          onClick={() => navigate('/login-student')}
-        >
-          <FaUserGraduate className="text-4xl mb-3" />
-          <span className="text-xl font-semibold">Student</span>
-          <p className="text-center text-sm mt-2 text-gray-300">
-            Access your courses and track your projects.
-          </p>
-        </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            <LoginCard
+              title="Student"
+              description="Access your courses, track projects, and participate in hackathons"
+              icon={FaUserGraduate}
+              onClick={() => navigate('/login-student')}
+              gradient="bg-violet-500/20 group-hover:bg-violet-500/30"
+            />
+            <LoginCard
+              title="Mentor"
+              description="Guide students, review projects, and share your expertise"
+              icon={FaChalkboardTeacher}
+              onClick={() => navigate('/login-mentor')}
+              gradient="bg-purple-500/20 group-hover:bg-purple-500/30"
+            />
+            <LoginCard
+              title="Faculty"
+              description="Manage courses, assess students, and organize hackathons"
+              icon={FaUserTie}
+              onClick={() => navigate('/login-faculty')}
+              gradient="bg-pink-500/20 group-hover:bg-pink-500/30"
+            />
+            <LoginCard
+              title="College"
+              description="Oversee institutional activities and manage resources"
+              icon={FaUniversity}
+              onClick={() => navigate('/college-login')}
+              gradient="bg-indigo-500/20 group-hover:bg-indigo-500/30"
+            />
+          </div>
 
-        {/* Mentor Login Box */}
-        <div
-          className="flex flex-col items-center justify-center w-48 h-56 bg-gray-800 rounded-lg p-4 hover:bg-purple-700 transition duration-200 cursor-pointer"
-          onClick={() => navigate('/login-mentor')}
-        >
-          <FaChalkboardTeacher className="text-4xl mb-3" />
-          <span className="text-xl font-semibold">Mentor</span>
-          <p className="text-center text-sm mt-2 text-gray-300">
-            Guide students and monitor their progress.
-          </p>
-        </div>
-
-        {/* Faculty Login Box */}
-        <div
-          className="flex flex-col items-center justify-center w-48 h-56 bg-gray-800 rounded-lg p-4 hover:bg-purple-700 transition duration-200 cursor-pointer"
-          onClick={() => navigate('/login-faculty')}
-        >
-          <FaUserTie className="text-4xl mb-3" />
-          <span className="text-xl font-semibold">Faculty</span>
-          <p className="text-center text-sm mt-2 text-gray-300">
-            Manage courses, students, and assessments.
-          </p>
-        </div>
-
-        {/* College Login Box */}
-        <div
-          className="flex flex-col items-center justify-center w-48 h-56 bg-gray-800 rounded-lg p-4 hover:bg-purple-700 transition duration-200 cursor-pointer"
-          onClick={() => navigate('/college-login')}
-        >
-          <FaUniversity className="text-4xl mb-3" />
-          <span className="text-xl font-semibold">College</span>
-          <p className="text-center text-sm mt-2 text-gray-300">
-            Oversee college-wide activities and resources.
-          </p>
+          <div className="text-center mt-16">
+            <p className="text-violet-200">
+              Don't have an account?{' '}
+              <a href="/signup-selection" className="text-white underline hover:text-violet-200">
+                Sign up here
+              </a>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
     </>
   );
 }
-
-export default SignInPage;
