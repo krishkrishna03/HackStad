@@ -20,9 +20,11 @@ function CollegeProfile() {
     place: '',
     profile_picture: '',
   });
-  const getBaseURL = () => {
-    const ip = window.location.hostname;
-    return `http://${ip}:8000`;
+      const getBaseURL = () => {
+    if (process.env.REACT_APP_API_URL) {
+      return process.env.REACT_APP_API_URL;
+    }
+    return 'https://hackstad-0nqg.onrender.com';
   };
 
   useEffect(() => {
