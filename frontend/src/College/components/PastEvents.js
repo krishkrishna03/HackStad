@@ -15,7 +15,7 @@ const PastEvents = () => {
           throw new Error("Authentication token is missing.");
         }
 
-        const response = await axios.get("http://127.0.0.1:8000/past_hackathons", {
+        const response = await axios.get("https://hackstad-0nqg.onrender.com/past_hackathons", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
