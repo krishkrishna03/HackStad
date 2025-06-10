@@ -29,7 +29,7 @@ const FacultyManagementPage = () => {
     }
 
     try {
-      const response = await axios.get('http://127.0.0.1:8000/college_faculty', {
+      const response = await axios.get('https://hackstad-0nqg.onrender.com/college_faculty', {
         headers: {
           'Authorization': `Bearer ${token}`,
           
