@@ -25,15 +25,7 @@ import {
     Database,
     Smartphone,
     Monitor,
-    Cloud,
-    Linkedin,
-    Mail,
-    MapPin,
-    Calendar,
-    ExternalLink,
-    ChevronRight,
-    Briefcase,
-    GraduationCap
+    Cloud
 } from "lucide-react";
 
 function Home() {
@@ -215,165 +207,76 @@ function Home() {
     const developers = [
         {
             name: "A Satya Balaji",
-            role: "Lead Full Stack Developer",
-            image: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg",
-            tech: ["React", "Node.js", "MongoDB", "AWS"],
-            specialization: "System Architecture",
-            experience: "5+ years",
+            role: "Full Stack Developer",
+            tech: ["React", "Node.js", "MongoDB"],
+            icon: Monitor,
             projects: 45,
-            location: "Hyderabad, India",
-            education: "B.Tech Computer Science",
-            bio: "Passionate full-stack developer with expertise in scalable web applications and cloud infrastructure. Led multiple high-impact projects and mentored junior developers.",
-            achievements: ["AWS Certified", "Tech Lead", "Open Source Contributor"],
-            social: {
-                github: "https://github.com",
-                linkedin: "https://linkedin.com",
-                email: "satya@hackstad.com"
-            }
+            experience: "5+ years"
         },
         {
             name: "P Dhanunjairam",
-            role: "Senior Full Stack Developer",
-            image: "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg",
-            tech: ["React", "Node.js", "PostgreSQL", "Docker"],
-            specialization: "Backend Systems",
-            experience: "4+ years",
+            role: "Full Stack Developer",
+            tech: ["React", "Node.js", "MongoDB"],
+            icon: Smartphone,
             projects: 32,
-            location: "Bangalore, India",
-            education: "M.Tech Software Engineering",
-            bio: "Backend specialist focused on building robust, scalable server-side applications. Expert in database optimization and microservices architecture.",
-            achievements: ["Database Expert", "Performance Optimizer", "Team Mentor"],
-            social: {
-                github: "https://github.com",
-                linkedin: "https://linkedin.com",
-                email: "dhanunjairam@hackstad.com"
-            }
+            experience: "4+ years"
         },
         {
             name: "P Sri Krishna Sai",
-            role: "Senior Full Stack Developer",
-            image: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg",
-            tech: ["Vue.js", "Python", "Django", "Redis"],
-            specialization: "API Development",
-            experience: "6+ years",
+            role: "Full Stack Developer",
+            tech: ["React", "Node.js", "MongoDB"],
+            icon: Database,
             projects: 18,
-            location: "Chennai, India",
-            education: "B.Tech Information Technology",
-            bio: "API architect and backend engineer with deep expertise in Python ecosystems. Specializes in building high-performance RESTful services.",
-            achievements: ["API Specialist", "Python Expert", "Code Reviewer"],
-            social: {
-                github: "https://github.com",
-                linkedin: "https://linkedin.com",
-                email: "krishna@hackstad.com"
-            }
+            experience: "6+ years"
         },
         {
             name: "A Chandhini",
-            role: "Senior Frontend Developer",
-            image: "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg",
-            tech: ["Vue.js", "TypeScript", "Sass", "Figma"],
-            specialization: "UI/UX Implementation",
-            experience: "5+ years",
+            role: "Frontend Specialist",
+            tech: ["Vue.js", "TypeScript", "Sass"],
+            icon: Code,
             projects: 22,
-            location: "Mumbai, India",
-            education: "B.Des User Experience Design",
-            bio: "Frontend specialist with a keen eye for design and user experience. Bridges the gap between design and development with pixel-perfect implementations.",
-            achievements: ["Design Systems Expert", "Accessibility Advocate", "UI Specialist"],
-            social: {
-                github: "https://github.com",
-                linkedin: "https://linkedin.com",
-                email: "chandhini@hackstad.com"
-            }
+            experience: "5+ years"
         },
         {
             name: "R Benayaram",
-            role: "DevOps Engineer",
-            image: "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg",
-            tech: ["Kubernetes", "Docker", "AWS", "Terraform"],
-            specialization: "Cloud Infrastructure",
-            experience: "7+ years",
+            role: "Full Stack Developer",
+            tech: ["React", "Node.js", "MongoDB"],
+            icon: Cloud,
             projects: 29,
-            location: "Pune, India",
-            education: "M.Tech Cloud Computing",
-            bio: "DevOps engineer specializing in cloud infrastructure and CI/CD pipelines. Ensures reliable, scalable deployment and monitoring of applications.",
-            achievements: ["Cloud Architect", "Kubernetes Expert", "Infrastructure Specialist"],
-            social: {
-                github: "https://github.com",
-                linkedin: "https://linkedin.com",
-                email: "benayaram@hackstad.com"
-            }
+            experience: "7+ years"
         },
         {
             name: "P Vaishnavi",
             role: "UI/UX Designer",
-            image: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg",
-            tech: ["Figma", "Adobe XD", "Framer", "Principle"],
-            specialization: "User Experience Design",
-            experience: "3+ years",
-            projects: 15,
-            location: "Delhi, India",
-            education: "M.Des Interaction Design",
-            bio: "Creative UI/UX designer passionate about creating intuitive and beautiful user experiences. Focuses on user-centered design and accessibility.",
-            achievements: ["Design Thinking Expert", "User Research Specialist", "Prototyping Pro"],
-            social: {
-                github: "https://github.com",
-                linkedin: "https://linkedin.com",
-                email: "vaishnavi@hackstad.com"
-            }
+            image: "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg",
+            tech: ["Figma", "Adobe XD", "Framer"],
+            icon: Heart,
+            projects: 5,
+            experience: "1+ years"
         },
         {
             name: "A Padma Sri",
-            role: "Backend Developer",
-            image: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg",
-            tech: ["Python", "Django", "PostgreSQL", "GraphQL"],
-            specialization: "Data Engineering",
-            experience: "2+ years",
-            projects: 12,
-            location: "Hyderabad, India",
-            education: "B.Tech Computer Science",
-            bio: "Backend developer with expertise in data processing and API development. Passionate about clean code and efficient database design.",
-            achievements: ["Rising Star", "Data Specialist", "Quick Learner"],
-            social: {
-                github: "https://github.com",
-                linkedin: "https://linkedin.com",
-                email: "padmasri@hackstad.com"
-            }
+            role: "Backend Engineer",
+            tech: ["Python", "Django", "PostgreSQL"],
+            icon: Brain,
+            projects: 7,
+            experience: "2+ years"
         },
         {
             name: "M Rushika Sri",
-            role: "Frontend Developer",
-            image: "https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg",
-            tech: ["React", "TypeScript", "Next.js", "Tailwind"],
-            specialization: "Modern Web Development",
-            experience: "3+ years",
-            projects: 19,
-            location: "Bangalore, India",
-            education: "B.Tech Information Technology",
-            bio: "Frontend developer specializing in modern React applications. Focuses on performance optimization and responsive design.",
-            achievements: ["React Expert", "Performance Optimizer", "Component Library Creator"],
-            social: {
-                github: "https://github.com",
-                linkedin: "https://linkedin.com",
-                email: "rushika@hackstad.com"
-            }
+            role: "Frontend Engineer",
+            tech: ["React", "Node.js", "Typescript"],
+            icon: Shield,
+            projects: 9,
+            experience: "3+ years"
         },
         {
             name: "S Rahamath",
             role: "Game Developer",
-            image: "https://images.pexels.com/photos/2182973/pexels-photo-2182973.jpeg",
-            tech: ["Unity", "C#", "Blender", "Unreal Engine"],
-            specialization: "3D Game Development",
-            experience: "4+ years",
-            projects: 8,
-            location: "Chennai, India",
-            education: "B.Tech Game Development",
-            bio: "Creative game developer with expertise in 3D environments and interactive experiences. Passionate about immersive storytelling through games.",
-            achievements: ["Unity Certified", "3D Specialist", "Game Design Expert"],
-            social: {
-                github: "https://github.com",
-                linkedin: "https://linkedin.com",
-                email: "rahamath@hackstad.com"
-            }
+            tech: ["Unity", "C#", "Blender"],
+            icon: Zap,
+            projects: 2,
+            experience: "5+ years"
         }
     ];
 
@@ -542,6 +445,9 @@ function Home() {
                                                 </span>
                                             </div>
 
+
+
+
                                             {/* Social Links */}
                                             <div className="flex justify-center space-x-4">
                                                 <a href={mentor.social.linkedin} className="p-2 bg-blue-500/20 hover:bg-blue-500/40 rounded-lg transition-colors">
@@ -557,202 +463,84 @@ function Home() {
                             </div>
                         </div>
 
-                        {/* Professional Development Team Section */}
-                        <div className="mb-20">
-                            <div className="text-center mb-16">
-                                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full mb-6">
-                                    <Code className="w-10 h-10 text-white" />
-                                </div>
-                                <h3 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mb-4">
+                        {/* Developers Section */}
+                        <div>
+                            <div className="text-center mb-12">
+                                <h3 className="text-4xl font-bold text-cyan-400 mb-2 flex items-center justify-center">
+                                    <Code className="w-10 h-10 mr-3" />
                                     Development Team
                                 </h3>
-                                <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                                    Meet our world-class development team - the architects of innovation who bring ideas to life with cutting-edge technology and unparalleled expertise.
-                                </p>
+                                <p className="text-lg text-gray-300">The creative force building amazing experiences</p>
                             </div>
 
-                            {/* Team Grid */}
-                            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {developers.map((developer, index) => (
                                     <div
                                         key={index}
-                                        className="group relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl rounded-2xl overflow-hidden border border-slate-700/50 hover:border-blue-400/50 transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-1"
+                                        className="group bg-gradient-to-br from-indigo-500/10 to-cyan-500/10 backdrop-blur-sm rounded-xl p-6 border border-indigo-300/20 hover:border-cyan-300/40 transition-all duration-300 transform hover:scale-105"
                                     >
-                                        {/* Animated Background Gradient */}
-                                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-cyan-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                        
-                                        {/* Glowing Border Effect */}
-                                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-400/20 via-cyan-400/20 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
-
-                                        <div className="relative z-10 p-8">
-                                            {/* Header Section */}
-                                            <div className="flex items-start space-x-4 mb-6">
-                                                {/* Profile Image */}
-                                                <div className="relative flex-shrink-0">
-                                                    <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-slate-600 group-hover:border-blue-400 transition-colors duration-300">
-                                                        <img
-                                                            src={developer.image}
-                                                            alt={developer.name}
-                                                            className="w-full h-full object-cover"
-                                                        />
-                                                    </div>
-                                                    {/* Status Indicator */}
-                                                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-slate-800 flex items-center justify-center">
-                                                        <div className="w-2 h-2 bg-white rounded-full"></div>
-                                                    </div>
-                                                </div>
-
-                                                {/* Basic Info */}
-                                                <div className="flex-1 min-w-0">
-                                                    <h4 className="text-xl font-bold text-white mb-1 group-hover:text-blue-300 transition-colors">
-                                                        {developer.name}
-                                                    </h4>
-                                                    <p className="text-blue-400 font-semibold text-sm mb-1">
-                                                        {developer.role}
-                                                    </p>
-                                                    <div className="flex items-center text-gray-400 text-xs">
-                                                        <MapPin className="w-3 h-3 mr-1" />
-                                                        {developer.location}
-                                                    </div>
+                                        <div className="flex items-start space-x-4">
+                                            {/* Profile Image */}
+                                            <div className="relative flex-shrink-0">
+                                                
+                                                <div className="absolute -bottom-1 -right-1 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full p-1">
+                                                    <developer.icon className="w-4 h-4 text-white" />
                                                 </div>
                                             </div>
 
-                                            {/* Specialization Badge */}
-                                            <div className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full border border-blue-400/30 mb-4">
-                                                <Target className="w-3 h-3 mr-2 text-blue-400" />
-                                                <span className="text-blue-300 text-xs font-medium">{developer.specialization}</span>
-                                            </div>
+                                            {/* Developer Info */}
+                                            <div className="flex-1">
+                                                <h4 className="text-lg font-bold text-white mb-1">{developer.name}</h4>
+                                                <p className="text-cyan-300 text-sm font-medium mb-2">{developer.role}</p>
 
-                                            {/* Bio */}
-                                            <p className="text-gray-300 text-sm leading-relaxed mb-6">
-                                                {developer.bio}
-                                            </p>
 
-                                            {/* Tech Stack */}
-                                            <div className="mb-6">
-                                                <h5 className="text-white font-semibold text-sm mb-3 flex items-center">
-                                                    <Code className="w-4 h-4 mr-2 text-cyan-400" />
-                                                    Tech Stack
-                                                </h5>
-                                                <div className="flex flex-wrap gap-2">
+                                                {/* Tech Stack */}
+                                                <div className="flex flex-wrap gap-1 mb-3">
                                                     {developer.tech.map((tech, idx) => (
                                                         <span
                                                             key={idx}
-                                                            className="px-3 py-1 bg-slate-700/50 text-gray-300 text-xs rounded-lg border border-slate-600/50 hover:border-cyan-400/50 hover:text-cyan-300 transition-all duration-200"
+                                                            className="px-2 py-1 bg-indigo-400/20 text-indigo-200 text-xs rounded border border-indigo-400/30"
                                                         >
                                                             {tech}
                                                         </span>
                                                     ))}
                                                 </div>
-                                            </div>
 
-                                            {/* Achievements */}
-                                            <div className="mb-6">
-                                                <h5 className="text-white font-semibold text-sm mb-3 flex items-center">
-                                                    <Award className="w-4 h-4 mr-2 text-yellow-400" />
-                                                    Key Achievements
-                                                </h5>
-                                                <div className="space-y-1">
-                                                    {developer.achievements.map((achievement, idx) => (
-                                                        <div key={idx} className="flex items-center text-xs text-gray-300">
-                                                            <ChevronRight className="w-3 h-3 mr-2 text-yellow-400" />
-                                                            {achievement}
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-
-                                            {/* Stats Row */}
-                                            <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-slate-800/30 rounded-xl border border-slate-700/50">
-                                                <div className="text-center">
-                                                    <div className="text-lg font-bold text-white">{developer.projects}</div>
-                                                    <div className="text-xs text-gray-400 flex items-center justify-center">
-                                                        <Briefcase className="w-3 h-3 mr-1" />
-                                                        Projects
-                                                    </div>
-                                                </div>
-                                                <div className="text-center">
-                                                    <div className="text-lg font-bold text-white">{developer.experience}</div>
-                                                    <div className="text-xs text-gray-400 flex items-center justify-center">
-                                                        <Calendar className="w-3 h-3 mr-1" />
-                                                        Experience
-                                                    </div>
-                                                </div>
-                                                <div className="text-center">
-                                                    <div className="text-lg font-bold text-white">
-                                                        <GraduationCap className="w-5 h-5 mx-auto" />
-                                                    </div>
-                                                    <div className="text-xs text-gray-400">Education</div>
-                                                </div>
-                                            </div>
-
-                                            {/* Education */}
-                                            <div className="mb-6 p-3 bg-slate-800/20 rounded-lg border border-slate-700/30">
-                                                <div className="text-xs text-gray-400 mb-1">Education</div>
-                                                <div className="text-sm text-gray-300">{developer.education}</div>
-                                            </div>
-
-                                            {/* Action Buttons */}
-                                            <div className="flex space-x-3">
-                                                {/* Connect Button */}
-                                                <button className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 transform hover:scale-105 flex items-center justify-center">
-                                                    <Mail className="w-4 h-4 mr-2" />
-                                                    Connect
-                                                </button>
-
-                                                {/* Social Links */}
-                                                <div className="flex space-x-2">
-                                                    <a
-                                                        href={developer.social.github}
-                                                        className="p-2 bg-slate-700/50 hover:bg-slate-600/50 rounded-lg transition-colors duration-200 group/social"
-                                                        title="GitHub"
-                                                    >
-                                                        <Github className="w-4 h-4 text-gray-400 group-hover/social:text-white" />
-                                                    </a>
-                                                    <a
-                                                        href={developer.social.linkedin}
-                                                        className="p-2 bg-slate-700/50 hover:bg-blue-600/50 rounded-lg transition-colors duration-200 group/social"
-                                                        title="LinkedIn"
-                                                    >
-                                                        <Linkedin className="w-4 h-4 text-gray-400 group-hover/social:text-blue-300" />
-                                                    </a>
-                                                    <a
-                                                        href={`mailto:${developer.social.email}`}
-                                                        className="p-2 bg-slate-700/50 hover:bg-green-600/50 rounded-lg transition-colors duration-200 group/social"
-                                                        title="Email"
-                                                    >
-                                                        <ExternalLink className="w-4 h-4 text-gray-400 group-hover/social:text-green-300" />
-                                                    </a>
+                                                {/* Stats */}
+                                                <div className="flex items-center justify-between text-xs text-gray-400">
+                                                    <span className="flex items-center">
+                                                        <Rocket className="w-3 h-3 mr-1" />
+                                                        {developer.projects} projects
+                                                    </span>
+                                                    <span className="flex items-center">
+                                                        <Clock className="w-3 h-3 mr-1" />
+                                                        {developer.experience}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 ))}
                             </div>
+                        </div>
 
-                            {/* Team Statistics */}
-                            <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
-                                {[
-                                    { icon: Users, label: "Team Members", value: "9", color: "blue", gradient: "from-blue-500 to-cyan-500" },
-                                    { icon: Briefcase, label: "Total Projects", value: "180+", color: "purple", gradient: "from-purple-500 to-pink-500" },
-                                    { icon: Calendar, label: "Combined Experience", value: "40+", color: "green", gradient: "from-green-500 to-emerald-500" },
-                                    { icon: Award, label: "Certifications", value: "25+", color: "yellow", gradient: "from-yellow-500 to-orange-500" }
-                                ].map((stat, index) => (
-                                    <div
-                                        key={index}
-                                        className="group relative bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-700/50 hover:border-blue-400/50 transition-all duration-300 transform hover:scale-105"
-                                    >
-                                        <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-300`}></div>
-                                        <div className="relative z-10 text-center">
-                                            <div className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r ${stat.gradient} rounded-xl mb-4`}>
-                                                <stat.icon className="w-6 h-6 text-white" />
-                                            </div>
-                                            <h4 className="text-2xl font-bold text-white mb-1">{stat.value}</h4>
-                                            <p className="text-gray-400 text-sm">{stat.label}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                        {/* Team Stats */}
+                        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+                            {[
+                                { icon: Users, label: "Team Members", value: "12", color: "purple" },
+                                { icon: Brain, label: "Years Experience", value: "60+", color: "pink" },
+                                { icon: Rocket, label: "Projects Built", value: "300+", color: "cyan" },
+                                { icon: Heart, label: "Happy Participants", value: "1000+", color: "indigo" }
+                            ].map((stat, index) => (
+                                <div
+                                    key={index}
+                                    className={`text-center p-6 bg-gradient-to-br from-${stat.color}-500/10 to-${stat.color}-600/10 rounded-lg border border-${stat.color}-400/20 hover:border-${stat.color}-400/40 transition-all duration-300 transform hover:scale-105`}
+                                >
+                                    <stat.icon className={`w-8 h-8 text-${stat.color}-400 mx-auto mb-2`} />
+                                    <h4 className="text-2xl font-bold text-white">{stat.value}</h4>
+                                    <p className="text-gray-300 text-sm">{stat.label}</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
