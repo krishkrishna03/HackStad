@@ -25,8 +25,10 @@ export default function SubmitProject() {
   const token = localStorage.getItem('token');
 
   const getBaseURL = () => {
-    const ip = window.location.hostname;
-    return `http://${ip}:8000`;
+    if (process.env.REACT_APP_API_URL) {
+      return process.env.REACT_APP_API_URL;
+    }
+    return 'https://hackstad-0nqg.onrender.com';
   };
 
   useEffect(() => {
