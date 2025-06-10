@@ -11,9 +11,11 @@ function SignIn() {
 
   // const BASE_URL = process.env.REACT_APP_API_URL || '${BASE_URL}';
   const getBaseURL = () => {
-    const ip = window.location.hostname; // Automatically gets the frontend's IP
-    return `http://${ip}:8000`;
-  };
+    if (process.env.REACT_APP_API_URL) {
+      return process.env.REACT_APP_API_URL;
+    }
+    return 'https://hackstad-0nqg.onrender.com';
+  };;
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
 
