@@ -1,0 +1,328 @@
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533a7b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.loading-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.gradient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  animation: float 6s ease-in-out infinite;
+}
+
+.orb-1 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(138, 43, 226, 0.4) 0%, transparent 70%);
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.orb-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(30, 144, 255, 0.3) 0%, transparent 70%);
+  top: 60%;
+  right: 15%;
+  animation-delay: 2s;
+}
+
+.orb-3 {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(255, 20, 147, 0.4) 0%, transparent 70%);
+  bottom: 30%;
+  left: 30%;
+  animation-delay: 4s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-20px) scale(1.1); }
+}
+
+.loading-content {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.logo-container {
+  position: relative;
+  margin-bottom: 60px;
+}
+
+.logo-3d {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  perspective: 1000px;
+}
+
+.logo-letter {
+  font-size: 4rem;
+  font-weight: 900;
+  font-family: 'Inter', sans-serif;
+  color: #ffffff;
+  text-shadow: 
+    0 0 20px rgba(255, 255, 255, 0.5),
+    0 0 40px rgba(138, 43, 226, 0.4),
+    0 0 60px rgba(30, 144, 255, 0.3);
+  transform: rotateX(25deg) rotateY(15deg);
+  animation: letterPulse 2s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+.logo-letter:nth-child(1) { animation-delay: 0.1s; }
+.logo-letter:nth-child(2) { animation-delay: 0.2s; }
+.logo-letter:nth-child(3) { animation-delay: 0.3s; }
+.logo-letter:nth-child(4) { animation-delay: 0.4s; }
+.logo-letter:nth-child(5) { animation-delay: 0.5s; }
+.logo-letter:nth-child(6) { animation-delay: 0.6s; }
+.logo-letter:nth-child(7) { animation-delay: 0.7s; }
+.logo-letter:nth-child(8) { animation-delay: 0.8s; }
+
+.logo-highlight {
+  color: #ff1493;
+  text-shadow: 
+    0 0 30px rgba(255, 20, 147, 0.8),
+    0 0 60px rgba(255, 20, 147, 0.6),
+    0 0 90px rgba(255, 20, 147, 0.4);
+}
+
+@keyframes letterPulse {
+  0%, 100% { 
+    transform: rotateX(25deg) rotateY(15deg) scale(1);
+    filter: brightness(1);
+  }
+  50% { 
+    transform: rotateX(25deg) rotateY(15deg) scale(1.1);
+    filter: brightness(1.2);
+  }
+}
+
+.logo-reflection {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  transform: scaleY(-1) rotateX(25deg);
+  opacity: 0.3;
+  filter: blur(1px);
+  background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.logo-letter-reflect {
+  font-size: 4rem;
+  font-weight: 900;
+  font-family: 'Inter', sans-serif;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.logo-highlight-reflect {
+  color: rgba(255, 20, 147, 0.3);
+}
+
+.loading-ring {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 40px;
+}
+
+.ring-segment {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 4px solid transparent;
+  border-radius: 50%;
+  animation: rotate 2s linear infinite;
+}
+
+.ring-segment:nth-child(1) {
+  border-top-color: #ff1493;
+  animation-delay: 0s;
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.5);
+}
+
+.ring-segment:nth-child(2) {
+  border-right-color: #1e90ff;
+  animation-delay: 0.5s;
+  box-shadow: 0 0 20px rgba(30, 144, 255, 0.5);
+}
+
+.ring-segment:nth-child(3) {
+  border-bottom-color: #8a2be2;
+  animation-delay: 1s;
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+}
+
+.ring-segment:nth-child(4) {
+  border-left-color: #00ff7f;
+  animation-delay: 1.5s;
+  box-shadow: 0 0 20px rgba(0, 255, 127, 0.5);
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.progress-container {
+  margin-bottom: 30px;
+}
+
+.progress-bar {
+  width: 300px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  margin: 0 auto 15px;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff1493, #1e90ff, #8a2be2, #00ff7f);
+  border-radius: 10px;
+  transition: width 0.3s ease;
+  position: relative;
+  box-shadow: 0 0 20px rgba(255, 20, 147, 0.5);
+}
+
+.progress-glow {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+  border-radius: 10px;
+  animation: progressGlow 2s ease-in-out infinite;
+}
+
+@keyframes progressGlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+.progress-text {
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.loading-text {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 400;
+  opacity: 0.8;
+  animation: textFade 2s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes textFade {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+.particle-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: particleFloat 4s ease-in-out infinite;
+}
+
+.particle-0 { top: 10%; left: 20%; animation-delay: 0s; }
+.particle-1 { top: 20%; left: 80%; animation-delay: 0.2s; }
+.particle-2 { top: 30%; left: 15%; animation-delay: 0.4s; }
+.particle-3 { top: 40%; left: 85%; animation-delay: 0.6s; }
+.particle-4 { top: 50%; left: 10%; animation-delay: 0.8s; }
+.particle-5 { top: 60%; left: 90%; animation-delay: 1s; }
+.particle-6 { top: 70%; left: 25%; animation-delay: 1.2s; }
+.particle-7 { top: 80%; left: 75%; animation-delay: 1.4s; }
+.particle-8 { top: 15%; left: 50%; animation-delay: 1.6s; }
+.particle-9 { top: 35%; left: 60%; animation-delay: 1.8s; }
+.particle-10 { top: 55%; left: 40%; animation-delay: 2s; }
+.particle-11 { top: 75%; left: 50%; animation-delay: 2.2s; }
+.particle-12 { top: 25%; left: 30%; animation-delay: 2.4s; }
+.particle-13 { top: 45%; left: 70%; animation-delay: 2.6s; }
+.particle-14 { top: 65%; left: 20%; animation-delay: 2.8s; }
+.particle-15 { top: 85%; left: 80%; animation-delay: 3s; }
+.particle-16 { top: 5%; left: 70%; animation-delay: 3.2s; }
+.particle-17 { top: 95%; left: 30%; animation-delay: 3.4s; }
+.particle-18 { top: 35%; left: 5%; animation-delay: 3.6s; }
+.particle-19 { top: 75%; left: 95%; animation-delay: 3.8s; }
+
+@keyframes particleFloat {
+  0%, 100% { 
+    transform: translateY(0px) scale(0.8);
+    opacity: 0.3;
+  }
+  25% { 
+    transform: translateY(-20px) scale(1);
+    opacity: 0.8;
+  }
+  50% { 
+    transform: translateY(-10px) scale(1.2);
+    opacity: 1;
+  }
+  75% { 
+    transform: translateY(-30px) scale(0.9);
+    opacity: 0.6;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo-letter {
+    font-size: 2.5rem;
+  }
+  
+  .logo-letter-reflect {
+    font-size: 2.5rem;
+  }
+  
+  .progress-bar {
+    width: 250px;
+  }
+  
+  .loading-ring {
+    width: 80px;
+    height: 80px;
+  }
+}
