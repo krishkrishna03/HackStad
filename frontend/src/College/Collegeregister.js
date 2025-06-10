@@ -30,7 +30,7 @@ function SignupForm() {
   const prevStep = () => setStep((prev) => prev - 1);
 
   // Dynamically fetch the API base URL
-   const getBaseURL = () => {
+     const getBaseURL = () => {
     if (process.env.REACT_APP_API_URL) {
       return process.env.REACT_APP_API_URL;
     }
