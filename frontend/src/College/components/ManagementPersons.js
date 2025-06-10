@@ -68,7 +68,7 @@ const FacultyManagementPage = () => {
     };
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/faculty', formDataToSend, {
+      const response = await axios.post('https://hackstad-0nqg.onrender.com/faculty', formDataToSend, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
