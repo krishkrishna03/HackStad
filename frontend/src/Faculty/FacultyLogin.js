@@ -12,9 +12,11 @@ function SignIn() {
     e.preventDefault();
 
     const getBaseURL = () => {
-      const ip = window.location.hostname; // Automatically gets the frontend's IP
-      return `http://${ip}:8000`;
-    };
+    if (process.env.REACT_APP_API_URL) {
+      return process.env.REACT_APP_API_URL;
+    }
+    return 'https://hackstad-0nqg.onrender.com';
+  };
     try {
       await axios.post(`${getBaseURL()}/facultylogin`, {email});
       toast.success('OTP sent to your email!');
@@ -30,11 +32,12 @@ function SignIn() {
     e.preventDefault();
     // Here you would verify the OTP
 
-    const getBaseURL = () => {
-      const ip = window.location.hostname; // Automatically gets the frontend's IP
-      return `http://${ip}:8000`;
-    };
-    
+   const getBaseURL = () => {
+    if (process.env.REACT_APP_API_URL) {
+      return process.env.REACT_APP_API_URL;
+    }
+    return 'https://hackstad-0nqg.onrender.com';
+  };
     try{
       const response = await axios.post(`${getBaseURL()}/verify-loginmentor`, { otp: parseInt(otp) });
       const token = response.data.access_token;
