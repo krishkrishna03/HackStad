@@ -12,8 +12,10 @@ export default function Teamchat() {
   const hackathon_Id = queryParams.get('hackathon_id');
 
   const getBaseURL = () => {
-    const ip = window.location.hostname;
-    return `ws://${ip}:8000`;
+    if (process.env.REACT_APP_API_URL) {
+      return process.env.REACT_APP_API_URL;
+    }
+    return 'https://hackstad-0nqg.onrender.com';
   };
 
   useEffect(() => {
