@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+const getBaseURL = () => process.env.REACT_APP_API_URL || 'https://hackstad-0nqg.onrender.com';
 function SignupForm() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
