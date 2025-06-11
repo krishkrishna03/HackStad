@@ -719,7 +719,7 @@ function Home() {
                                     </h3>
                                     <div className="mb-4 p-3 bg-gray-700 rounded-lg shadow-md transform hover:scale-105 transition-all duration-300">
                                         <p className="flex items-center text-md text-gray-300 hover:text-purple-400">
-                                            <i className="fas fa-envelope mr-3 text-pink-500"></i> info@hackstad.com
+                                            <i className="fas fa-envelope mr-3 text-pink-500"></i> hackathons.hackstad@gmail.com
                                         </p>
                                     </div>
                                     <div className="mb-4 p-3 bg-gray-700 rounded-lg shadow-md transform hover:scale-105 transition-all duration-300">
@@ -729,7 +729,7 @@ function Home() {
                                     </div>
                                     <div className="mb-4 p-3 bg-gray-700 rounded-lg shadow-md transform hover:scale-105 transition-all duration-300">
                                         <p className="flex items-center text-md text-gray-300 hover:text-purple-400">
-                                            <i className="fas fa-map-marker-alt mr-3 text-pink-500"></i> 123 Greenroad, Delhi, India
+                                            <i className="fas fa-map-marker-alt mr-3 text-pink-500"></i> Kakinada, Andhra Pradesh, India
                                         </p>
                                     </div>
                                 </div>
