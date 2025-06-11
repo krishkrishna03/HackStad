@@ -303,7 +303,7 @@ function Home() {
                             {/* Call to Action Button with Hover Animation */}
                             <div className="flex justify-center">
                                 <a
-                                    href="https://discord.com"
+                                    href="https://discord.gg/eKvhWz2W"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-500 text-white rounded-lg font-semibold transition-all transform hover:scale-110 hover:translate-y-2 ease-in-out duration-300 animate_animated animate_zoomIn"
