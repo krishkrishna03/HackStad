@@ -1496,4 +1496,3 @@ async def mentor_participant_chat_endpoint(websocket: WebSocket):
                     pass
     except WebSocketDisconnect:
         mentor_participant_chats[chat_id]["connections"].remove(websocket)
-
