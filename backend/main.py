@@ -44,6 +44,10 @@ REFRESH_TOKEN_EXPIRE_DAYS = 30  # 30 days
 
 app = FastAPI()
 
+@app.on_event("startup")
+async def startup_event():
+    await init_mongo()
+
 
 ##############
 #aws id code
@@ -54,9 +58,8 @@ import boto3
 #################################################################
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://hackstadk.netlify.app"
-    ], # Frontend URL here
+    allow_origins=["*"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -69,6 +72,10 @@ app.include_router(mentor_routes)
 app.include_router(college_router)
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
 
 #user related codes 
 # Hackathon Details Endpoint
