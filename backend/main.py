@@ -54,7 +54,9 @@ import boto3
 #################################################################
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Frontend URL here
+    allow_origins=[
+        "https://hackstadk.netlify.app"
+    ], # Frontend URL here
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
