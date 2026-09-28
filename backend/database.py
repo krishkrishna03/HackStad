@@ -33,37 +33,64 @@ from pydantic import BaseModel,EmailStr
 from dotenv import load_dotenv
 load_dotenv()
 
+client12 = None
+database = None
+fs = None
+userdata = None
+CollegeData = None
+FacultyData = None
+MentorData = None
+Hackathon_data = None
+registrations = None
+TeamData = None
+TeamInvites = None
+CollegeBankDetails = None
+HackathonSubmissions = None
+EvaluationData = None
+HackathonWinners = None
+TeamChatMessages = None
+_memory_users = {}
 
+async def init_mongo():
+    global client12, database, fs, userdata, CollegeData, FacultyData, MentorData, Hackathon_data, registrations, TeamData, TeamInvites, CollegeBankDetails, HackathonSubmissions, EvaluationData, HackathonWinners, TeamChatMessages
 
-client12 =  AsyncIOMotorClient("mongodb+srv://hackathonsite:Team-6@cluster0.tllxu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&connectTimeoutMS=30000"
-                        ,tls=True,
-                        tlsCAFile=certifi.where())
+    if client12 is not None:
+        return
 
-try:
-    client12.admin.command('ping')
-    print("Connection successful!")
-except Exception as e:
-    print("Connection failed:", e)
-# Use Motor's GridFS
-from motor.motor_asyncio import AsyncIOMotorGridFSBucket
+    mongo_uri = os.getenv("MONGO_URI") or os.getenv("MONGODB_URI") or "mongodb://localhost:27017/Hackathonsite"
 
+    try:
+        client12 = AsyncIOMotorClient(
+            mongo_uri,
+            serverSelectionTimeoutMS=5000,
+            tls=True if mongo_uri.startswith("mongodb+srv://") else False,
+            tlsCAFile=certifi.where() if mongo_uri.startswith("mongodb+srv://") else None,
+        )
+        await client12.admin.command('ping')
+        print("Connection successful!")
+    except Exception as e:
+        print("Connection failed:", e)
+        print("Falling back to in-memory unsafe mode for local startup; set MONGO_URI to a valid MongoDB server to restore persistence.")
+        client12 = None
+        return None
 
-#client1 = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:27017/')
-database = client12['Hackathonsite']
-fs = AsyncIOMotorGridFSBucket(database)
-userdata = database['users']
-CollegeData = database['college']
-FacultyData = database['faculty']
-MentorData = database['mentor']
-Hackathon_data = database['hackthon_data']
-registrations = database["hackthon_registrations"]
-TeamData = database['hackthon_teams']
-TeamInvites = database['team_invites']
-CollegeBankDetails = database['college_bankdetails']
-HackathonSubmissions = database['hackathon_submissions']
-EvaluationData = database['evaluation_data']
-HackathonWinners = database['hackathon_winners']
-TeamChatMessages = database['team_chat_messages']
+    database = client12['Hackathonsite']
+    fs = AsyncIOMotorGridFSBucket(database)
+    userdata = database['users']
+    CollegeData = database['college']
+    FacultyData = database['faculty']
+    MentorData = database['mentor']
+    Hackathon_data = database['hackthon_data']
+    registrations = database["hackthon_registrations"]
+    TeamData = database['hackthon_teams']
+    TeamInvites = database['team_invites']
+    CollegeBankDetails = database['college_bankdetails']
+    HackathonSubmissions = database['hackathon_submissions']
+    EvaluationData = database['evaluation_data']
+    HackathonWinners = database['hackathon_winners']
+    TeamChatMessages = database['team_chat_messages']
+
+    return database
 async def get_upcoming_hackathons():
     current_time = datetime.utcnow()  # Current time in UTC
     # Fetch the hackathons
@@ -74,16 +101,32 @@ async def get_upcoming_hackathons():
 
 
 async def create_user(user_data):
-    user  = await userdata.find_one({"email": user_data['email']})
+    email = (user_data.get('email') or '').strip().lower()
+    if userdata is None:
+        if email in _memory_users:
+            raise HTTPException(status_code=400, detail="User with this email already exists")
+        _memory_users[email] = dict(user_data)
+        return dict(user_data)
+
+    user = await userdata.find_one({"email": email})
     if user:
         raise HTTPException(status_code=400, detail="User with this email already exists")
-    else:
-        data = user_data
-        userdata.insert_one(data)
+
+    data = user_data
+    await userdata.insert_one(data)
     return data
 
 async def get_user_by_email(email: str):
     """ Fetch user by email from the database, ensuring case normalization. """
+    email = email.strip().lower()
+    if userdata is None:
+        user = _memory_users.get(email)
+        if user:
+            user_copy = dict(user)
+            user_copy["_id"] = str(user_copy.get("_id", "memory"))
+            return user_copy
+        return None
+
     user = await userdata.find_one({"email": email})
 
     if user:
@@ -93,23 +136,15 @@ async def get_user_by_email(email: str):
 
 
 async def check_user(email):
-    # List all databases in the cluster
-    databases1 = await client12.list_database_names()
-    
-    for db_name in databases1:
-        db = client12[db_name]
-        
-        # List all collections in the current database
-        collections = await db.list_collection_names()
-        
-        for collection_name in collections:
-            collection = db[collection_name]
-            
-            # Search for the email in the current collection
-            user_ = await collection.find_one({"email": email})
-            
-            if user_:
-                raise HTTPException(status_code=400, detail="User with this email already exists")
+    email = (email or '').strip().lower()
+    if userdata is None:
+        if email in _memory_users:
+            raise HTTPException(status_code=400, detail="User with this email already exists")
+        return
+
+    user = await userdata.find_one({"email": email})
+    if user:
+        raise HTTPException(status_code=400, detail="User with this email already exists")
 
 
 async def get_current_user(token: str = Depends(oauth2_scheme)):
@@ -427,11 +462,12 @@ async def static_image(input_key: str):
 # sender_password = "cnkp iyfy wuht ihtk"
 
 def send_otp_email(email: str, otp: int):
-    sender_email = "hackathons.hackstad@gmail.com"
-    sender_password = "huxn oxkg swmz oqis"
+    sender_email = os.getenv("MAIN_EMAIL", "hackathons.hackstad@gmail.com")
+    sender_password = os.getenv("MAIN_EMAIL_PASSWORD", "huxn oxkg swmz oqis")
 
     if not sender_email or not sender_password:
-        raise HTTPException(status_code=500, detail="Email credentials are not set. Please configure MAIN_EMAIL and MAIN_EMAIL_PASSWORD.")
+        print("Email credentials are not set. Please configure MAIN_EMAIL and MAIN_EMAIL_PASSWORD.")
+        return False
 
     message = f"Subject: Your OTP for registration\n\nYour OTP is: {otp}"
 
@@ -442,13 +478,15 @@ def send_otp_email(email: str, otp: int):
         server.sendmail(sender_email, email, message)
         server.quit()
         print(f"OTP sent to {email}")
+        return True
     except Exception as e:
         print(f"Failed to send OTP email: {e}")
-        raise HTTPException(status_code=500, detail="Failed to send OTP email. Please try again later.")
+        print(f"OTP for local testing: {otp}")
+        return False
     
 def send_team_invitations_email(email: str, otp: int):
-    sender_email = "hackathons.hackstad@gmail.com"
-    sender_password = "huxn oxkg swmz oqis"
+    sender_email = os.getenv("MAIN_EMAIL", "hackathons.hackstad@gmail.com")
+    sender_password = os.getenv("MAIN_EMAIL_PASSWORD", "huxn oxkg swmz oqis")
     message = f"Subject: You Got an invitation\n\nYour OTP is: {otp}"
 
     try:
@@ -458,9 +496,11 @@ def send_team_invitations_email(email: str, otp: int):
         server.sendmail(sender_email, email, message)
         server.quit()
         print(f"OTP sent to {email}")
+        return True
     except Exception as e:
         print(f"Failed to send OTP email: {e}")
-        raise HTTPException(status_code=500, detail="Failed to send OTP email. Please try again later.")
+        print(f"OTP for local testing: {otp}")
+        return False
     
 def send_message_to_mentor_email(emails: list, files: List[UploadFile]):
     sender_email = "hackathons.hackstad@gmail.com"
