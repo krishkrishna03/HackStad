@@ -84,7 +84,9 @@ const RegistrationForm = () => {
         navigate('/login-student');
       }
     } catch (error) {
-      toast.error('Invalid OTP. Please try again.');
+      const message = error.response?.data?.detail || 'Registration could not be completed. Please try again.';
+      setError(message);
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
