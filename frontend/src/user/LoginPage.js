@@ -14,7 +14,7 @@ function StudentLoginForm() {
   const [otp, setOtp] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Use environment variable or fallback to your deployed backend URL (HTTPS)
+  // Use the configured API URL, or the deployed backend when none is configured.
   const getBaseURL = () => {
     if (process.env.REACT_APP_API_URL) {
       return process.env.REACT_APP_API_URL;
@@ -31,7 +31,8 @@ function StudentLoginForm() {
       setStep('otp'); // Move to OTP verification step
     } catch (error) {
       console.error('Error Sending OTP:', error);
-      toast.error('Failed to Send OTP. Please try again.');
+      const message = error.response?.data?.detail || 'Failed to send OTP. Please try again.';
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
