@@ -5,6 +5,7 @@ from mimetypes import guess_type
 import os
 import re
 import smtplib
+import logging
 from typing import Any, Dict, List
 from urllib.parse import urlparse
 from aiohttp import ClientError
@@ -21,6 +22,7 @@ import certifi
 import gridfs
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorGridFSBucket
+logger = logging.getLogger(__name__)
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 SECRET_KEY = "your_secret_key"
@@ -497,7 +499,15 @@ def send_otp_email(email: str, otp: int):
     sender_password = os.getenv("MAIN_EMAIL_PASSWORD")
 
     if not sender_email or not sender_password:
-        print("Email credentials are not configured.")
+        missing = [
+            name
+            for name, value in (
+                ("MAIN_EMAIL", sender_email),
+                ("MAIN_EMAIL_PASSWORD", sender_password),
+            )
+            if not value
+        ]
+        logger.error("OTP email configuration is missing: %s", ", ".join(missing))
         return False
 
     message = f"Subject: Your OTP for registration\n\nYour OTP is: {otp}"
@@ -507,11 +517,34 @@ def send_otp_email(email: str, otp: int):
             server.starttls()
             server.login(sender_email, sender_password)
             server.sendmail(sender_email, email, message)
-        print(f"OTP sent to {email}")
+        logger.info("OTP email sent successfully.")
         return True
-    except Exception as e:
-        print(f"Failed to send OTP email: {e}")
+    except smtplib.SMTPAuthenticationError as exc:
+        logger.error(
+            "Gmail rejected OTP email authentication (SMTP %s). Check the sender address "
+            "and Gmail App Password configured in the deployed service.",
+            exc.smtp_code,
+        )
+    except (smtplib.SMTPConnectError, smtplib.SMTPServerDisconnected, TimeoutError, OSError) as exc:
+        logger.error(
+            "Could not connect to Gmail SMTP for OTP delivery (%s). Check outbound "
+            "SMTP connectivity from the deployed service.",
+            type(exc).__name__,
+        )
+    except smtplib.SMTPRecipientsRefused as exc:
+        logger.error(
+            "Gmail refused the OTP recipient (SMTP codes: %s).",
+            ", ".join(str(response[0]) for response in exc.recipients.values()),
+        )
+    except smtplib.SMTPResponseException as exc:
+        response = exc.smtp_error.decode("utf-8", errors="replace") if isinstance(exc.smtp_error, bytes) else str(exc.smtp_error)
+        logger.error("Gmail SMTP returned error %s: %s", exc.smtp_code, response[:200])
+    except smtplib.SMTPException as exc:
+        logger.error("Gmail SMTP protocol error during OTP delivery: %s", type(exc).__name__)
+    except Exception:
+        logger.exception("Unexpected error while sending OTP email.")
         return False
+    return False
     
 def send_team_invitations_email(email: str, otp: int):
     sender_email = os.getenv("MAIN_EMAIL", "hackathons.hackstad@gmail.com")
