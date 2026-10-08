@@ -2,7 +2,8 @@ from datetime import timezone
 import logging
 import random
 from typing import Set
-from fastapi import APIRouter, Request, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, HTTPException, Request, WebSocket, WebSocketDisconnect
+from starlette.concurrency import run_in_threadpool
 from razorpay import Client
 from database import *
 from model import *
@@ -26,12 +27,16 @@ async def register_user(user: Usersdata):
     # Generate OTP
     await check_user(user.email)
     otp = random.randint(100000, 999999)
-    print(f"user login otp :{otp}")
-    send_otp_email(user.email, otp)
+    email_sent = await run_in_threadpool(send_otp_email, user.email, otp)
+    if not email_sent:
+        raise HTTPException(
+            status_code=503,
+            detail="We couldn't send the verification email. Please try again later.",
+        )
     
     # Store user data and OTP temporarily (e.g., in memory)
     temporary_user_data[otp] = {  # Store OTP as the key
-        'user_data': user.dict()  # Temporarily store the user data
+        'user_data': user.model_dump()
     }
 
     # Return response
@@ -83,8 +88,12 @@ async def login_for_access_token(request: Userloginrequest):
 
     # Generate and send OTP only if user exists
     otp = random.randint(100000, 999999)
-    send_otp_email(email, otp)
-    print(f"this is user otp : {otp}")
+    email_sent = await run_in_threadpool(send_otp_email, email, otp)
+    if not email_sent:
+        raise HTTPException(
+            status_code=503,
+            detail="We couldn't send the verification email. Please try again later.",
+        )
     # Store OTP with email for verification
     temp_user_email[otp] = {'user_email': email}
 
