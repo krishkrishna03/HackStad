@@ -18,6 +18,7 @@ from passlib.context import CryptContext
 from fastapi import  HTTPException,Depends, Query, UploadFile ,status
 from jose import JWTError, jwt
 from pymongo import MongoClient
+from pymongo.errors import PyMongoError
 import certifi
 import gridfs
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -117,6 +118,27 @@ async def close_mongo():
     EvaluationData = None
     HackathonWinners = None
     TeamChatMessages = None
+
+
+async def check_mongo_connection():
+    if client12 is None or database is None:
+        raise HTTPException(
+            status_code=503,
+            detail="MongoDB is not connected.",
+        )
+
+    try:
+        await client12.admin.command("ping")
+    except PyMongoError as exc:
+        logger.exception("MongoDB health check failed.")
+        raise HTTPException(
+            status_code=503,
+            detail="MongoDB connection check failed.",
+        ) from exc
+
+    return {"status": "connected", "database": database.name}
+
+
 async def get_upcoming_hackathons():
     current_time = datetime.utcnow()  # Current time in UTC
     # Fetch the hackathons
