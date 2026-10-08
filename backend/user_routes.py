@@ -75,8 +75,8 @@ async def login_for_access_token(request: Userloginrequest):
     if not user:
         print(f"DEBUG: User not found for email: {email}")
         raise HTTPException(
-            status_code=400,
-            detail="College email not found",
+            status_code=404,
+            detail="Student account not found. Please sign up first.",
         )
     else:
         print(f"DEBUG: User found for email: {email}")
