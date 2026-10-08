@@ -10,6 +10,7 @@ from typing import Any, Dict, List
 from urllib.parse import urlparse
 from aiohttp import ClientError
 import boto3
+import httpx
 from fastapi.responses import StreamingResponse
 import motor.motor_asyncio
 from model import Usersdata ,UserResponse ,TokenData,TokenData1,TokenData2
@@ -495,6 +496,35 @@ async def static_image(input_key: str):
 # sender_password = "cnkp iyfy wuht ihtk"
 
 def send_otp_email(email: str, otp: int):
+    resend_api_key = os.getenv("RESEND_API_KEY")
+    resend_from_email = os.getenv("RESEND_FROM_EMAIL")
+
+    if resend_api_key:
+        if not resend_from_email:
+            logger.error("RESEND_FROM_EMAIL is required when RESEND_API_KEY is configured.")
+            return False
+
+        try:
+            response = httpx.post(
+                "https://api.resend.com/emails",
+                headers={"Authorization": f"Bearer {resend_api_key}"},
+                json={
+                    "from": resend_from_email,
+                    "to": [email],
+                    "subject": "Your HackStad verification code",
+                    "text": f"Your verification code is: {otp}",
+                },
+                timeout=15,
+            )
+            response.raise_for_status()
+            logger.info("OTP email sent successfully through Resend.")
+            return True
+        except httpx.HTTPStatusError as exc:
+            logger.error("Resend rejected OTP email request (HTTP %s).", exc.response.status_code)
+        except httpx.RequestError as exc:
+            logger.error("Could not reach Resend to deliver OTP (%s).", type(exc).__name__)
+        return False
+
     sender_email = os.getenv("MAIN_EMAIL")
     sender_password = os.getenv("MAIN_EMAIL_PASSWORD")
 
