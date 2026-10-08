@@ -49,7 +49,6 @@ HackathonSubmissions = None
 EvaluationData = None
 HackathonWinners = None
 TeamChatMessages = None
-_memory_users = {}
 
 async def init_mongo():
     global client12, database, fs, userdata, CollegeData, FacultyData, MentorData, Hackathon_data, registrations, TeamData, TeamInvites, CollegeBankDetails, HackathonSubmissions, EvaluationData, HackathonWinners, TeamChatMessages
@@ -128,11 +127,10 @@ async def get_upcoming_hackathons():
 async def create_user(user_data):
     email = (user_data.get('email') or '').strip().lower()
     if userdata is None:
-        if email in _memory_users:
-            raise HTTPException(status_code=400, detail="User with this email already exists")
-        normalized_user_data = {**user_data, "email": email}
-        _memory_users[email] = normalized_user_data
-        return dict(normalized_user_data)
+        raise HTTPException(
+            status_code=503,
+            detail="Registration is unavailable because the database is not connected.",
+        )
 
     user = await userdata.find_one({
         "email": {"$regex": f"^{re.escape(email)}$", "$options": "i"}
@@ -148,12 +146,10 @@ async def get_user_by_email(email: str):
     """ Fetch user by email from the database, ensuring case normalization. """
     email = email.strip().lower()
     if userdata is None:
-        user = _memory_users.get(email)
-        if user:
-            user_copy = dict(user)
-            user_copy["_id"] = str(user_copy.get("_id", "memory"))
-            return user_copy
-        return None
+        raise HTTPException(
+            status_code=503,
+            detail="Login is unavailable because the database is not connected.",
+        )
 
     user = await userdata.find_one({"email": email})
     if user is None:
@@ -170,9 +166,10 @@ async def get_user_by_email(email: str):
 async def check_user(email):
     email = (email or '').strip().lower()
     if userdata is None:
-        if email in _memory_users:
-            raise HTTPException(status_code=400, detail="User with this email already exists")
-        return
+        raise HTTPException(
+            status_code=503,
+            detail="Registration is unavailable because the database is not connected.",
+        )
 
     user = await userdata.find_one({
         "email": {"$regex": f"^{re.escape(email)}$", "$options": "i"}
@@ -496,26 +493,24 @@ async def static_image(input_key: str):
 # sender_password = "cnkp iyfy wuht ihtk"
 
 def send_otp_email(email: str, otp: int):
-    sender_email = os.getenv("MAIN_EMAIL", "hackathons.hackstad@gmail.com")
-    sender_password = os.getenv("MAIN_EMAIL_PASSWORD", "huxn oxkg swmz oqis")
+    sender_email = os.getenv("MAIN_EMAIL")
+    sender_password = os.getenv("MAIN_EMAIL_PASSWORD")
 
     if not sender_email or not sender_password:
-        print("Email credentials are not set. Please configure MAIN_EMAIL and MAIN_EMAIL_PASSWORD.")
+        print("Email credentials are not configured.")
         return False
 
     message = f"Subject: Your OTP for registration\n\nYour OTP is: {otp}"
 
     try:
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(sender_email, sender_password)
-        server.sendmail(sender_email, email, message)
-        server.quit()
+        with smtplib.SMTP('smtp.gmail.com', 587, timeout=15) as server:
+            server.starttls()
+            server.login(sender_email, sender_password)
+            server.sendmail(sender_email, email, message)
         print(f"OTP sent to {email}")
         return True
     except Exception as e:
         print(f"Failed to send OTP email: {e}")
-        print(f"OTP for local testing: {otp}")
         return False
     
 def send_team_invitations_email(email: str, otp: int):
