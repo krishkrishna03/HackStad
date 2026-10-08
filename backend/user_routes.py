@@ -32,8 +32,8 @@ async def register_user(user: Usersdata):
         raise HTTPException(
             status_code=503,
             detail=(
-                "OTP email delivery failed. Check MAIN_EMAIL and MAIN_EMAIL_PASSWORD "
-                "in the deployed service, then review its logs for SMTP details."
+                "OTP email delivery failed. Configure a working email provider in the "
+                "deployed service and review its logs for details."
             ),
         )
     
@@ -96,8 +96,8 @@ async def login_for_access_token(request: Userloginrequest):
         raise HTTPException(
             status_code=503,
             detail=(
-                "OTP email delivery failed. Check MAIN_EMAIL and MAIN_EMAIL_PASSWORD "
-                "in the deployed service, then review its logs for SMTP details."
+                "OTP email delivery failed. Configure a working email provider in the "
+                "deployed service and review its logs for details."
             ),
         )
     # Store OTP with email for verification
