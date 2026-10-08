@@ -130,14 +130,17 @@ async def create_user(user_data):
     if userdata is None:
         if email in _memory_users:
             raise HTTPException(status_code=400, detail="User with this email already exists")
-        _memory_users[email] = dict(user_data)
-        return dict(user_data)
+        normalized_user_data = {**user_data, "email": email}
+        _memory_users[email] = normalized_user_data
+        return dict(normalized_user_data)
 
-    user = await userdata.find_one({"email": email})
+    user = await userdata.find_one({
+        "email": {"$regex": f"^{re.escape(email)}$", "$options": "i"}
+    })
     if user:
         raise HTTPException(status_code=400, detail="User with this email already exists")
 
-    data = user_data
+    data = {**user_data, "email": email}
     await userdata.insert_one(data)
     return data
 
@@ -153,6 +156,10 @@ async def get_user_by_email(email: str):
         return None
 
     user = await userdata.find_one({"email": email})
+    if user is None:
+        user = await userdata.find_one({
+            "email": {"$regex": f"^{re.escape(email)}$", "$options": "i"}
+        })
 
     if user:
         user["_id"] = str(user["_id"])  # Convert ObjectId to string for JSON compatibility
@@ -167,7 +174,9 @@ async def check_user(email):
             raise HTTPException(status_code=400, detail="User with this email already exists")
         return
 
-    user = await userdata.find_one({"email": email})
+    user = await userdata.find_one({
+        "email": {"$regex": f"^{re.escape(email)}$", "$options": "i"}
+    })
     if user:
         raise HTTPException(status_code=400, detail="User with this email already exists")
 
