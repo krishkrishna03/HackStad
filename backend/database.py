@@ -62,6 +62,7 @@ async def init_mongo():
     try:
         client12 = AsyncIOMotorClient(
             mongo_uri,
+            io_loop=asyncio.get_running_loop(),
             serverSelectionTimeoutMS=5000,
             tls=True if mongo_uri.startswith("mongodb+srv://") else False,
             tlsCAFile=certifi.where() if mongo_uri.startswith("mongodb+srv://") else None,
@@ -91,6 +92,30 @@ async def init_mongo():
     TeamChatMessages = database['team_chat_messages']
 
     return database
+
+
+async def close_mongo():
+    global client12, database, fs, userdata, CollegeData, FacultyData, MentorData, Hackathon_data, registrations, TeamData, TeamInvites, CollegeBankDetails, HackathonSubmissions, EvaluationData, HackathonWinners, TeamChatMessages
+
+    if client12 is not None:
+        client12.close()
+
+    client12 = None
+    database = None
+    fs = None
+    userdata = None
+    CollegeData = None
+    FacultyData = None
+    MentorData = None
+    Hackathon_data = None
+    registrations = None
+    TeamData = None
+    TeamInvites = None
+    CollegeBankDetails = None
+    HackathonSubmissions = None
+    EvaluationData = None
+    HackathonWinners = None
+    TeamChatMessages = None
 async def get_upcoming_hackathons():
     current_time = datetime.utcnow()  # Current time in UTC
     # Fetch the hackathons
