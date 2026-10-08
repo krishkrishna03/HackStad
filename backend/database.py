@@ -1,10 +1,9 @@
 import asyncio
+import base64
 from datetime import datetime, timedelta
-from email.message import EmailMessage
 from mimetypes import guess_type
 import os
 import re
-import smtplib
 import logging
 from typing import Any, Dict, List
 from urllib.parse import urlparse
@@ -491,157 +490,94 @@ async def static_image(input_key: str):
     except Exception as e:
         return {"error": str(e)}
 
-
-# sender_email = "onlineseller277@gmail.com"
-# sender_password = "cnkp iyfy wuht ihtk"
-
-def send_otp_email(email: str, otp: int):
-    resend_api_key = os.getenv("RESEND_API_KEY")
-    resend_from_email = os.getenv("RESEND_FROM_EMAIL")
-
-    if resend_api_key:
-        if not resend_from_email:
-            logger.error("RESEND_FROM_EMAIL is required when RESEND_API_KEY is configured.")
-            return False
-
-        try:
-            response = httpx.post(
-                "https://api.resend.com/emails",
-                headers={"Authorization": f"Bearer {resend_api_key}"},
-                json={
-                    "from": resend_from_email,
-                    "to": [email],
-                    "subject": "Your HackStad verification code",
-                    "text": f"Your verification code is: {otp}",
-                },
-                timeout=15,
-            )
-            response.raise_for_status()
-            logger.info("OTP email sent successfully through Resend.")
-            return True
-        except httpx.HTTPStatusError as exc:
-            logger.error("Resend rejected OTP email request (HTTP %s).", exc.response.status_code)
-        except httpx.RequestError as exc:
-            logger.error("Could not reach Resend to deliver OTP (%s).", type(exc).__name__)
-        return False
-
-    sender_email = os.getenv("MAIN_EMAIL")
-    sender_password = os.getenv("MAIN_EMAIL_PASSWORD")
-
-    if not sender_email or not sender_password:
+def _send_email_via_resend(
+    recipients: list[str],
+    subject: str,
+    text: str,
+    attachments: list[dict[str, str]] | None = None,
+) -> bool:
+    api_key = os.getenv("RESEND_API_KEY")
+    from_email = os.getenv("RESEND_FROM_EMAIL")
+    if not api_key or not from_email:
         missing = [
             name
-            for name, value in (
-                ("MAIN_EMAIL", sender_email),
-                ("MAIN_EMAIL_PASSWORD", sender_password),
-            )
+            for name, value in (("RESEND_API_KEY", api_key), ("RESEND_FROM_EMAIL", from_email))
             if not value
         ]
-        logger.error("OTP email configuration is missing: %s", ", ".join(missing))
+        logger.error("Resend email configuration is missing: %s", ", ".join(missing))
         return False
 
-    message = f"Subject: Your OTP for registration\n\nYour OTP is: {otp}"
+    payload: dict[str, Any] = {
+        "from": from_email,
+        "to": recipients,
+        "subject": subject,
+        "text": text,
+    }
+    if attachments:
+        payload["attachments"] = attachments
 
     try:
-        with smtplib.SMTP('smtp.gmail.com', 587, timeout=15) as server:
-            server.starttls()
-            server.login(sender_email, sender_password)
-            server.sendmail(sender_email, email, message)
-        logger.info("OTP email sent successfully.")
+        response = httpx.post(
+            "https://api.resend.com/emails",
+            headers={"Authorization": f"Bearer {api_key}"},
+            json=payload,
+            timeout=15,
+        )
+        response.raise_for_status()
         return True
-    except smtplib.SMTPAuthenticationError as exc:
-        logger.error(
-            "Gmail rejected OTP email authentication (SMTP %s). Check the sender address "
-            "and Gmail App Password configured in the deployed service.",
-            exc.smtp_code,
-        )
-    except (smtplib.SMTPConnectError, smtplib.SMTPServerDisconnected, TimeoutError, OSError) as exc:
-        logger.error(
-            "Could not connect to Gmail SMTP for OTP delivery (%s). Check outbound "
-            "SMTP connectivity from the deployed service.",
-            type(exc).__name__,
-        )
-    except smtplib.SMTPRecipientsRefused as exc:
-        logger.error(
-            "Gmail refused the OTP recipient (SMTP codes: %s).",
-            ", ".join(str(response[0]) for response in exc.recipients.values()),
-        )
-    except smtplib.SMTPResponseException as exc:
-        response = exc.smtp_error.decode("utf-8", errors="replace") if isinstance(exc.smtp_error, bytes) else str(exc.smtp_error)
-        logger.error("Gmail SMTP returned error %s: %s", exc.smtp_code, response[:200])
-    except smtplib.SMTPException as exc:
-        logger.error("Gmail SMTP protocol error during OTP delivery: %s", type(exc).__name__)
-    except Exception:
-        logger.exception("Unexpected error while sending OTP email.")
-        return False
+    except httpx.HTTPStatusError as exc:
+        logger.error("Resend rejected the email request (HTTP %s).", exc.response.status_code)
+    except httpx.RequestError as exc:
+        logger.error("Could not reach Resend email API (%s).", type(exc).__name__)
     return False
-    
-def send_team_invitations_email(email: str, otp: int):
-    sender_email = os.getenv("MAIN_EMAIL", "hackathons.hackstad@gmail.com")
-    sender_password = os.getenv("MAIN_EMAIL_PASSWORD", "huxn oxkg swmz oqis")
-    message = f"Subject: You Got an invitation\n\nYour OTP is: {otp}"
 
-    try:
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(sender_email, sender_password)
-        server.sendmail(sender_email, email, message)
-        server.quit()
-        print(f"OTP sent to {email}")
-        return True
-    except Exception as e:
-        print(f"Failed to send OTP email: {e}")
-        print(f"OTP for local testing: {otp}")
-        return False
-    
+
+def send_otp_email(email: str, otp: int) -> bool:
+    sent = _send_email_via_resend(
+        [email],
+        "Your HackStad verification code",
+        f"Your verification code is: {otp}",
+    )
+    if sent:
+        logger.info("OTP email sent successfully through Resend.")
+    return sent
+
+
+def send_team_invitations_email(email: str, invite_link: str) -> bool:
+    return _send_email_via_resend(
+        [email],
+        "You are invited to join a HackStad team",
+        f"You have been invited to join a team. Accept the invitation here: {invite_link}",
+    )
+
+
 def send_message_to_mentor_email(emails: list, files: List[UploadFile]):
-    sender_email = "hackathons.hackstad@gmail.com"
-    sender_password = "huxn oxkg swmz oqis"  # Handle passwords securely!
+    attachments = []
+    for file in files:
+        if not file or not file.filename:
+            continue
+
+        file.file.seek(0)
+        file_data = file.file.read()
+        mime_type, _ = guess_type(file.filename)
+        attachments.append({
+            "filename": file.filename,
+            "content": base64.b64encode(file_data).decode("ascii"),
+            "content_type": mime_type or "application/octet-stream",
+        })
 
     for email in emails:
-        try:
-            # Create a new email message
-            msg = EmailMessage()
-            msg['Subject'] = 'Check out! Notification from HACKSTAD'
-            msg['From'] = sender_email
-            msg['To'] = email
-            msg.set_content("YOU are assigned to the upcoming hackathon")
-
-            # Attach each file
-            for file in files:
-                if not file or not file.filename:
-                    print(f"Skipping invalid or empty file: {file}")
-                    continue
-
-                file_name = file.filename
-                mime_type, encoding = guess_type(file_name)
-                if mime_type is None:
-                    mime_type = "application/octet-stream"
-                
-                app_type, sub_type = mime_type.split("/")
-                file_data = file.file.read()
-
-                if app_type == "application" and sub_type == "pdf":
-                    print(f"Attaching PDF: {file_name}")
-                elif app_type == "image":
-                    print(f"Attaching Image: {file_name}")
-                else:
-                    print(f"Attaching Other File: {file_name}")
-
-                msg.add_attachment(
-                    file_data, maintype=app_type, subtype=sub_type, filename=file_name
-                )
-
-            # Connect to the SMTP server and send the email
-            with smtplib.SMTP('smtp.gmail.com', 587) as server:
-                server.starttls()
-                server.login(sender_email, sender_password)
-                server.send_message(msg)
-
-            print(f"Email sent to {email}")
-        except Exception as e:
-            print(f"Failed to send email to {email}: {e}")
-            raise HTTPException(status_code=500, detail=f"Failed to send email to {email}. Please try again later.")
+        sent = _send_email_via_resend(
+            [email],
+            "HackStad hackathon notification",
+            "You are assigned to the upcoming hackathon. See the attached hackathon files.",
+            attachments,
+        )
+        if not sent:
+            raise HTTPException(
+                status_code=503,
+                detail="Mentor notification email could not be sent. Check Resend configuration.",
+            )
 
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
