@@ -31,7 +31,10 @@ async def register_user(user: Usersdata):
     if not email_sent:
         raise HTTPException(
             status_code=503,
-            detail="We couldn't send the verification email. Please try again later.",
+            detail=(
+                "OTP email delivery failed. Check MAIN_EMAIL and MAIN_EMAIL_PASSWORD "
+                "in the deployed service, then review its logs for SMTP details."
+            ),
         )
     
     # Store user data and OTP temporarily (e.g., in memory)
@@ -92,7 +95,10 @@ async def login_for_access_token(request: Userloginrequest):
     if not email_sent:
         raise HTTPException(
             status_code=503,
-            detail="We couldn't send the verification email. Please try again later.",
+            detail=(
+                "OTP email delivery failed. Check MAIN_EMAIL and MAIN_EMAIL_PASSWORD "
+                "in the deployed service, then review its logs for SMTP details."
+            ),
         )
     # Store OTP with email for verification
     temp_user_email[otp] = {'user_email': email}
