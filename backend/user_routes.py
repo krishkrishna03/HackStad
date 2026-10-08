@@ -32,8 +32,8 @@ async def register_user(user: Usersdata):
         raise HTTPException(
             status_code=503,
             detail=(
-                "OTP email delivery failed. Configure a working email provider in the "
-                "deployed service and review its logs for details."
+                "OTP email delivery failed. Configure RESEND_API_KEY and "
+                "RESEND_FROM_EMAIL in the deployed service."
             ),
         )
     
@@ -96,8 +96,8 @@ async def login_for_access_token(request: Userloginrequest):
         raise HTTPException(
             status_code=503,
             detail=(
-                "OTP email delivery failed. Configure a working email provider in the "
-                "deployed service and review its logs for details."
+                "OTP email delivery failed. Configure RESEND_API_KEY and "
+                "RESEND_FROM_EMAIL in the deployed service."
             ),
         )
     # Store OTP with email for verification
