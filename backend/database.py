@@ -548,7 +548,35 @@ def _send_email_via_resend(
         response.raise_for_status()
         return True
     except httpx.HTTPStatusError as exc:
-        logger.error("Resend rejected the email request (HTTP %s).", exc.response.status_code)
+        try:
+            error_body = exc.response.json()
+        except ValueError:
+            error_body = {}
+
+        if isinstance(error_body, dict):
+            error_name = error_body.get("name", "unknown_error")
+            error_message = error_body.get("message", "No error message returned.")
+        else:
+            error_name = "unknown_error"
+            error_message = "No error message returned."
+
+        if not isinstance(error_name, str):
+            error_name = "unknown_error"
+        if not isinstance(error_message, str):
+            error_message = "No error message returned."
+
+        error_message = re.sub(
+            r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b",
+            "[redacted email]",
+            error_message,
+            flags=re.IGNORECASE,
+        )
+        logger.error(
+            "Resend rejected the email request (HTTP %s, %s): %s",
+            exc.response.status_code,
+            error_name[:100],
+            error_message[:500],
+        )
     except httpx.RequestError as exc:
         logger.error("Could not reach Resend email API (%s).", type(exc).__name__)
     return False
