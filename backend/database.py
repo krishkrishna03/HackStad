@@ -20,7 +20,7 @@ from pymongo import MongoClient
 import certifi
 import gridfs
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from motor.motor_asyncio import AsyncIOMotorClient
+from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorGridFSBucket
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 SECRET_KEY = "your_secret_key"
